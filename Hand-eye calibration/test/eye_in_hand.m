@@ -1,24 +1,24 @@
 clear all
 
 
-%% ²ÎÊýÉèÖÃ
-% ÉèÖÃ´ýÇóÊÖÑÛ¹ØÏµTc_b
+%% å‚æ•°è®¾ç½®
+% è®¾ç½®å¾…æ±‚æ‰‹çœ¼å…³ç³»Tc_b
 Tc_e =  Td([56,17,15])*R(1,0.5,1.1);
-% ÉèÖÃ´ýÇó±êÖ¾µãÎ»ÖÃp_e
+% è®¾ç½®å¾…æ±‚æ ‡å¿—ç‚¹ä½ç½®p_e
 p_b = [30, 32 ,510];
 
-% UR5»úÆ÷ÈË²ÎÊý 
+% UR5æœºå™¨äººå‚æ•° 
 DH = [  89.2     0        pi/2
-        0       425        0
-        0       392        0
+        0       -425        0
+        0       -392        0
         109.3    0        pi/2
         9.475    0       -pi/2
         8.25     0           0];
    
     
-%% Ä£Äâ»ñÈ¡ÎÞÆ«²âÁ¿Êý¾Ý
-% p1 p2 p3 ÉèÖÃÎª¹Ø½Ú6×ª¶¯ÓÃÒÔÈ·¶¨ÄâºÏÖáÏßÊ¸Á¿¡££¨´Ó´óµ½Ð¡×ª¶¯È·¶¨Ê¸Á¿·½Ïò£©
-% pc ²»Óëp1 p2 p3¹²ÃæÓÃÒÔ×îÖÕÇó½â
+%% æ¨¡æ‹ŸèŽ·å–æ— åæµ‹é‡æ•°æ®
+% p1 p2 p3 è®¾ç½®ä¸ºå…³èŠ‚6è½¬åŠ¨ç”¨ä»¥ç¡®å®šæ‹Ÿåˆè½´çº¿çŸ¢é‡ã€‚ï¼ˆä»Žå¤§åˆ°å°è½¬åŠ¨ç¡®å®šçŸ¢é‡æ–¹å‘ï¼‰
+% pc ä¸ä¸Žp1 p2 p3å…±é¢ç”¨ä»¥æœ€ç»ˆæ±‚è§£
 q1 = [2   -129.16 -25.67 -85.39 0 86.66];
 q2 = [2  -129.16 -25.67 -85.39 0 56.66];
 q3 = [2  -129.16 -25.67 -85.39 0 6.66];
@@ -37,15 +37,15 @@ P  = [p2;pc];
 T(:,:,1) = T2;
 T(:,:,2) = Tc;
 
-%% ¿ªÊ¼Çó½â
+%% å¼€å§‹æ±‚è§£
 % Tc_b=Dc_b(Tdx,Tdy,Tdz)*Rc_b(thetax,thetay,thetaz);
-% ÄâºÏÔ²
+% æ‹Ÿåˆåœ†
 [c1,r1,f1] = CircleCenter(p1,p2,p3);
-% Çó½âÐý×ª²ÎÊýthetax£¬thetay£»   
+% æ±‚è§£æ—‹è½¬å‚æ•°thetaxï¼Œthetayï¼›   
 [thetax,thetay] = thetaxy(f1);
 
-% Çó½â·½Ê½Ò»£ºÇó³ö±ê¶¨µãÎ»ÖÃÐÅÏ¢
-% »ñÈ¡K¾ØÕó
+% æ±‚è§£æ–¹å¼ä¸€ï¼šæ±‚å‡ºæ ‡å®šç‚¹ä½ç½®ä¿¡æ¯
+% èŽ·å–KçŸ©é˜µ
 
 k = [];
 for i = 1:size(P,1)
@@ -61,12 +61,12 @@ end
 x = fsolve(@(x) myfun_1(x,K,k,3*size(P,1)),[0;0;0;0;0],optimoptions('fsolve','Display','iter'));
 
 p_b_1 = [x(2),x(4),x(3)];
-% ¸ù¾ÝÖ±Ïß·½³ÌÇó½âTdx£¬Tdz
+% æ ¹æ®ç›´çº¿æ–¹ç¨‹æ±‚è§£Tdxï¼ŒTdz
 Tdy = x(1);
 Tdx = f1(1)*(Tdy-c1(2))/f1(2)+c1(1);
 Tdz = f1(3)*(Tdy-c1(2))/f1(2)+c1(3);
 Tc_e_1 = Td([Tdx,Tdy,Tdz])*R(thetax,thetay,x(5));
-%% Çó½â·½Ê½¶þ£º²»¼ÆËã±êÖ¾µãÎ»ÖÃÐÅÏ¢
+%% æ±‚è§£æ–¹å¼äºŒï¼šä¸è®¡ç®—æ ‡å¿—ç‚¹ä½ç½®ä¿¡æ¯
 
 for i = 1:size(P,1)
     [kxi,kyi,kzi] = coefficient_2(T(:,:,i),thetax,thetay,P(i,:),f1,c1);
@@ -81,8 +81,8 @@ Tdy = x2(2);
 Tdx = f1(1)*(Tdy-c1(2))/f1(2)+c1(1);
 Tdz = f1(3)*(Tdy-c1(2))/f1(2)+c1(3);
 Tc_b_2 = Td([Tdx,Tdy,Tdz])*R(thetax,thetay,x2(1));
-% ·½·¨¶þÇó½âÍê±Ï
-%% ÑéÖ¤
+% æ–¹æ³•äºŒæ±‚è§£å®Œæ¯•
+%% éªŒè¯
 p_b_1 - p_b
 Tc_b_2 - Tc_e
 Tc_e_1 - Tc_e
